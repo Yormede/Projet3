@@ -1,8 +1,9 @@
 init();
-//localStorage
+
 function init(){
     getCategories();
     getProjects();
+    LogInTimer();
 }
 
 function getCategories() {
@@ -71,27 +72,21 @@ function filterProjects(){
     })
 }
 
- /* Salut, n'oublie pas que le fetch() 
- renvoie une Promise donc tu dois ajouter 
- .then() pour récupérer ce que le serveur 
- te renvoie et .catch() pour gérer l'erreur 
- s'il y en a une Pour t'expliquer comment fonctionne 
- l'authentification, une des méthodes consiste à sauvegarder 
- dans le localStorage le token qui est renvoyer lors de la 
- requête au serveur avec l'email et le mot de passe  
- (cf. le cours Créez des pages web dynamiques avec JavaScript)
-Ainsi, quand tu dois faire des requêtes pour ajouter 
-ou supprimer des images, tu récupères ce token afin 
-de prouver au serveur que tu es bien authentifié */
-
-
-const test =     fetch('http://localhost:5678/api/categories')
-                 .then((response) => response.json())
-                 .then(data => data)
-
-console.log(test)
-
-const nbtn = document.querySelectorAll(".filter button")
-console.log(nbtn)
-
+function LogInTimer() {
+    var hours = 8; // to clear the localStorage after 1 hour
+    // (if someone want to clear after 8hrs simply change hours=8)
+    var now = new Date().getTime();
+    console.log(now);
+    var setupTime = localStorage.getItem('setupTime');
+    if (setupTime == null) {
+        localStorage.setItem('setupTime', now)
+    } else {
+        if(now-setupTime > hours*1000*60*60) {
+            localStorage.clear()
+            localStorage.setItem('setupTime', now);
+            alert("vous n'ètes plus connecté")
+        }
+    }
+  }
+  
 
