@@ -27,16 +27,7 @@ function displayCategories(tableCategories) {
     filterButton.textContent = element.name
     filterButton.setAttribute('data-category-id',element.id)
     const filterDiv = document.querySelector(".filter")
-
     filterDiv.appendChild(filterButton)
-
-    // if (element.id === 1) {
-    // filterButton.className = "bouttonObjets" }
-    // else if (element.id === 2) {
-    // filterButton.className = "bouttonAppart";}
-    // else  {
-    // filterButton.className = "bouttonHotel";
-    // }
     })
 }
 
@@ -63,6 +54,7 @@ function filterProjects(){
     const projects = document.querySelectorAll('.gallery figure');
     btnFilter.forEach(element =>{
         element.addEventListener('click', function(){
+            console.log(btnFilter);
             let categoryId = element.getAttribute('data-category-id');
             projects.forEach(el=>{
                 if(categoryId){
@@ -93,5 +85,13 @@ ou supprimer des images, tu récupères ce token afin
 de prouver au serveur que tu es bien authentifié */
 
 
+const test =     fetch('http://localhost:5678/api/categories')
+                 .then((response) => response.json())
+                 .then(data => data)
+
+console.log(test)
+
+const nbtn = document.querySelectorAll(".filter button")
+console.log(nbtn)
 
 

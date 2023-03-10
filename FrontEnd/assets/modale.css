@@ -1,0 +1,17 @@
+.modale {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modaleWrapper {
+    background-color: white;
+    width: 30%;
+    min-width: 400px;
+}

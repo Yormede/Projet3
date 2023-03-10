@@ -9,6 +9,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" href="./assets/modale.css">
 </head>
 <body>
 <header>
@@ -34,6 +35,7 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
+
 	<section id="portfolio">
 		<h2>Mes Projets</h2>
 		<div class="filter">
@@ -43,6 +45,20 @@
 
 		</div>
 	</section>
+
+	<a href="#modal1">modifier</a>
+
+	<aside class="modale" id="modale" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+		<div class="modaleWrapper">
+			<p>fermer la modale</p>
+			<h1 class="modalTitle">Gallerie photo</h1>
+			<div class="modifGallery">
+			</div>
+			<button>Ajouter une photo</button>
+			<button>Supprimer la galerie</button>
+		</div>
+	</aside>
+	
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
