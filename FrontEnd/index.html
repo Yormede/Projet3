@@ -10,15 +10,21 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<link rel="stylesheet" href="./assets/modale.css">
+	<script src="https://kit.fontawesome.com/3161e5a74b.js" crossorigin="anonymous"></script>
 </head>
 <body>
+	<div class="displayWhenLoggedIn topBarBlack">
+			<p>Mode édition</p>
+			<button>Publier les changements</button>
+	</div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<a href="login.html"><li>login</li></a>
+			<li><a href="login.html" class="undisplayWhenLoggedIn">login</a></li>
+			<li class="logged displayWhenLoggedIn">logout</li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -27,6 +33,7 @@
 	<section id="introduction">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
+			<figcaption class="displayWhenLoggedIn editLogo"><i class="fa-light fa-pen-to-square"></i>modifier</figcaption>
 		</figure>
 		<article>
 			<h2>Designer d'espace</h2>
@@ -37,7 +44,11 @@
 	</section>
 
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="portfolioTitle">		
+			<h2>Mes Projets</h2>
+			<p class="displayWhenLoggedIn editLogo"><i class="fa-light fa-pen-to-square"></i>modifier</p>
+		</div>
+
 		<div class="filter">
 			<button class="selected">Tous</button>
 		</div>
@@ -46,7 +57,7 @@
 		</div>
 	</section>
 
-	<a href="#modal1">modifier</a>
+	<!-- <a href="#modal1">modifier</a>
 
 	<aside class="modale" id="modale" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
 		<div class="modaleWrapper">
@@ -57,7 +68,7 @@
 			<button>Ajouter une photo</button>
 			<button>Supprimer la galerie</button>
 		</div>
-	</aside>
+	</aside> -->
 	
 	<section id="contact">
 		<h2>Contact</h2>

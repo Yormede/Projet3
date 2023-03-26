@@ -4,6 +4,8 @@ function init(){
     getCategories();
     getProjects();
     LogInTimer();
+    userLoggedIn();
+    filterProjects();
 }
 
 function getCategories() {
@@ -87,6 +89,22 @@ function LogInTimer() {
             alert("vous n'ètes plus connecté")
         }
     }
-  }
-  
+}
+
+function userLoggedIn() {
+    const userObject = JSON.parse(localStorage.getItem('userLogged'));
+    console.log(userObject.token);
+    if (userObject.token !== undefined) {
+        const elementToDisplayWhenLoggedIn = document.querySelectorAll('.displayWhenLoggedIn')
+        elementToDisplayWhenLoggedIn.forEach (element =>{
+            element.style.display = 'block';
+          })
+        const elementToUndisplayWhenLoggedIn = document.querySelectorAll('.undisplayWhenLoggedIn')
+        elementToUndisplayWhenLoggedIn.forEach (element =>{
+            element.style.display = 'none';
+          })
+    }
+}
+
+
 

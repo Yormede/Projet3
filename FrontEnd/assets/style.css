@@ -50,7 +50,7 @@ table {
 body {
 	max-width: 1140px;
 	margin:auto;
-	font-family: 'Work Sans' ;
+	font-family: 'Work Sans';
 	font-size: 14px;
 }
 header {
@@ -93,27 +93,39 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	color: black;
+	text-decoration: none;
 }
 
-li:hover {
-	color: #B1663C;
+nav li a {
+	text-decoration: none;
+	color:black;
 }
+
+li:hover, li a:hover {
+	color: #B1663C;
+	cursor: pointer;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
 }
+
 #introduction figure {
 	flex: 1
 }
+
 #introduction img {
 	display: block;
-	margin: auto;
+	margin: auto auto auto 7% ;
 	width: 80%;
 }
 
 #introduction article {
 	flex: 1
 }
+
 #introduction h2 {
 	margin-bottom: 1em;
 }
@@ -121,10 +133,12 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -137,17 +151,21 @@ li:hover {
 	width: 100%;
 	object-fit: cover;
 }
+
 #contact {
 	width: 50%;
 	margin: auto;
 }
+
 #contact > * {
 	text-align: center;
 
 }
+
 #contact h2{
 	margin-bottom: 20px;
 }
+
 #contact form {
 	text-align: left;
 	margin-top:30px;
@@ -161,9 +179,11 @@ li:hover {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 #contact label {
 	margin: 2em 0 1em 0;
 }
+
 #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
@@ -174,10 +194,16 @@ input[type="submit"]{
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
-	margin : 2em auto ;
+	margin : 2em auto 0px auto ;
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+}
+
+input[type="submit"]:hover {
+	background-color: #164e44;
+	cursor: pointer;
+	transition: 0.25s;
 }
 
 footer nav ul {
@@ -207,4 +233,43 @@ footer nav ul {
 .filter button:hover {
 	background-color: #1D6154;
 	color: white;
+}
+
+#contact p {
+	margin: 10px;
+}
+
+.errorLog {
+	color: red;
+	display: none;
+	margin: 0px auto 15px auto;
+}
+
+.topBarBlack {
+	height: 50px;
+	background-color: black;
+	color: white;
+
+}
+
+div.topBarBlack p, div.topBarBlack button {
+	margin: auto;
+}
+
+.displayWhenLoggedIn {
+	display: none;
+}
+
+.portfolioTitle {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+}
+
+#introduction figure figcaption {
+	margin: 10px auto auto 7%;
+}
+
+.portfolioTitle p {
+	margin-left: 20px;
 }

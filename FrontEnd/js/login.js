@@ -12,7 +12,7 @@ function redirectionAcceuil(){
 function login() {
   const email =  document.querySelector('#email');
   const password = document.querySelector('#password');
-  if(email.value.length > 0 && password.value.length > 0){
+  if(email.value.length > 5 && password.value.length > 0){
     fetch('http://localhost:5678/api/users/login', {
       method: 'POST',
       headers: {
@@ -24,7 +24,8 @@ function login() {
       if (response.ok) {
         return response.json();
       } else {
-        alert("Adresse mail ou mot de passe incorrect")
+        const errorLog = document.querySelector('.errorLog')
+        errorLog.style.display = 'block'
       }
     })
     .then(data => {
@@ -34,7 +35,8 @@ function login() {
       redirectionAcceuil()
     }})
   }else{
-    alert("Adresse mail ou mot de passe incorrect")  
+    const errorLog = document.querySelector('.errorLog')
+    errorLog.style.display = 'block'
   }
 }
 
@@ -47,7 +49,7 @@ function loginSubmit(){
 }
 
 function LogInTimer() {
-  var hours = 0.00000000001; // to clear the localStorage after 1 hour
+  var hours = 8; // to clear the localStorage after 1 hour
   // (if someone want to clear after 8hrs simply change hours=8)
   var now = new Date().getTime();
   console.log(now);
