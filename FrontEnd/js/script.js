@@ -2,10 +2,11 @@ init();
 
 function init(){
     getCategories();
-    getProjects();
-    LogInTimer();
+    getWorks();
     userLoggedIn();
     filterProjects();
+    LogInTimer();
+    logOut();
 }
 
 function getCategories() {
@@ -16,7 +17,7 @@ function getCategories() {
     });
 }
 
-function getProjects() {
+function getWorks() {
     fetch('http://localhost:5678/api/works') 
     .then((respe) => respe.json())
     .then(data => { 
@@ -78,7 +79,6 @@ function LogInTimer() {
     var hours = 8; // to clear the localStorage after 1 hour
     // (if someone want to clear after 8hrs simply change hours=8)
     var now = new Date().getTime();
-    console.log(now);
     var setupTime = localStorage.getItem('setupTime');
     if (setupTime == null) {
         localStorage.setItem('setupTime', now)
@@ -86,14 +86,13 @@ function LogInTimer() {
         if(now-setupTime > hours*1000*60*60) {
             localStorage.clear()
             localStorage.setItem('setupTime', now);
-            alert("vous n'ètes plus connecté")
+            alert("vous n'ètes pas connecté")
         }
     }
-}
+  }
 
 function userLoggedIn() {
     const userObject = JSON.parse(localStorage.getItem('userLogged'));
-    console.log(userObject.token);
     if (userObject.token !== undefined) {
         const elementToDisplayWhenLoggedIn = document.querySelectorAll('.displayWhenLoggedIn')
         elementToDisplayWhenLoggedIn.forEach (element =>{
@@ -103,7 +102,19 @@ function userLoggedIn() {
         elementToUndisplayWhenLoggedIn.forEach (element =>{
             element.style.display = 'none';
           })
+        const header = document.querySelector("header")
+        header.style.marginTop = '90px';
+        const topBlackBar = document.querySelector(".topBarBlack")
+        topBlackBar.style.display = 'flex';
     }
+}
+
+function logOut() {
+    const logOutButton = document.querySelector('.logOutButton')
+    logOutButton.addEventListener('click', function (event) {
+      localStorage.clear();
+      window.location.reload();
+    })
 }
 
 

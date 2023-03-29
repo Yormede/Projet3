@@ -134,11 +134,6 @@ li:hover, li a:hover {
 	margin-bottom: 0.5em;
 }
 
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
-}
-
 .gallery {
 	width: 100%;
 	display: grid;
@@ -246,14 +241,32 @@ footer nav ul {
 }
 
 .topBarBlack {
+	z-index: 10;
 	height: 50px;
 	background-color: black;
 	color: white;
-
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	justify-content: center;
 }
 
 div.topBarBlack p, div.topBarBlack button {
-	margin: auto;
+	margin: auto 10px;
+	font-family: 'Work Sans';
+	font-size: 16px;
+}
+
+div.topBarBlack button {
+	background-color: white;
+	border-radius: 100px;
+	border: none;
+	padding: 10px 2%;
+}
+
+div.topBarBlack button:hover {
+	cursor: pointer;
 }
 
 .displayWhenLoggedIn {
@@ -263,7 +276,8 @@ div.topBarBlack p, div.topBarBlack button {
 .portfolioTitle {
 	display: flex;
 	justify-content: center;
-	align-items: baseline;
+	align-items: center;
+	margin-bottom: 2em;
 }
 
 #introduction figure figcaption {
@@ -271,5 +285,10 @@ div.topBarBlack p, div.topBarBlack button {
 }
 
 .portfolioTitle p {
-	margin-left: 20px;
+	margin-left: 10px;
 }
+
+i {
+	margin-right: 4px;
+}
+

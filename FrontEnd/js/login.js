@@ -2,7 +2,6 @@ init()
 
 function init(){
   loginSubmit();
-  LogInTimer();
 }
 
 function redirectionAcceuil(){
@@ -48,22 +47,6 @@ function loginSubmit(){
   });
 }
 
-function LogInTimer() {
-  var hours = 8; // to clear the localStorage after 1 hour
-  // (if someone want to clear after 8hrs simply change hours=8)
-  var now = new Date().getTime();
-  console.log(now);
-  var setupTime = localStorage.getItem('setupTime');
-  if (setupTime == null) {
-      localStorage.setItem('setupTime', now)
-  } else {
-      if(now-setupTime > hours*1000*60*60) {
-          localStorage.clear()
-          localStorage.setItem('setupTime', now);
-          alert("vous n'ètes pas connecté")
-      }
-  }
-}
 
 
 

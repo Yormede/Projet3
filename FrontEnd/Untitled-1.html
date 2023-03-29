@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="#" method="post">
+        <div>
+            <label for="images">+ Ajout photo</label>
+            <p class="">jpg. png: 4mo max</p>
+            <input type="file" accept=".jpg, .png, .gif " onchange="previewPicture(this)" required>
+        </div>
+        <label for="title">Titre</label>
+        <input type="text" name="title" id="titleNewPhoto">
+        <label for="class">Catégorie</label>
+        <select id="categoryOfForm" name="class">
+            <option value="pomme">Pomme</option>
+            <option value="banane">Banane</option>
+            <option value="orange">Orange</option>
+            <option value="kiwi">Kiwi</option>
+        </select>
+
+    </form>
+</body>
+</html>

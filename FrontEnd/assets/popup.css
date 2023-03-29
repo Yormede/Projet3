@@ -1,0 +1,78 @@
+.popup {
+    position: fixed;
+    top:35px;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popupOverlay {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+}
+
+.popupElement {
+    background-color: white;
+    width: 30%;
+    min-width: 250px;
+    position: relative;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.popupElement img {
+    width: 30%;
+    object-fit: cover;
+}
+
+.DivTextAndButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 65%;
+}
+
+.DivTextAndButton p {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cancelButton {
+    border: 1px solid rgb(34, 33, 33);
+    border-radius: 100px;
+    padding: 4px 10px;
+    color: rgb(129, 42, 42);
+    background-color: #ffffff;
+    font-family: 'Syne';
+    font-size: 15px;
+}
+
+.fetchDeleteButton {
+    border: 1px solid rgb(34, 33, 33);
+    border-radius: 100px;
+    padding: 4px 10px;
+    color: rgb(255, 255, 255);
+    background-color: #1D6154;
+    font-family: 'Syne';
+    font-size: 15px;
+}
+
+.buttonDiv button:hover {
+    cursor: pointer;
+}

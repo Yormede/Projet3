@@ -1,17 +1,122 @@
 .modale {
     position: fixed;
+    top:35px;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modaleOverlay {
+    position: fixed;
     top:0;
     left:0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    display: none;
 }
 
 .modaleWrapper {
     background-color: white;
-    width: 30%;
+    width: 35%;
     min-width: 400px;
+    position: relative;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    overflow: auto;
 }
+
+
+.openModale:hover {
+    cursor: pointer;
+    color: #B1663C;
+}
+
+.modaleButtonOfGallery {
+    margin: 10px 0;
+}
+
+.closeModale, .goBackArrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 18px;
+}
+
+.modaleTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 26px;
+    margin: 20px auto;
+}
+
+.galleryToEdit {
+    margin: auto;
+    display: flex;
+    justify-content: baseline;
+    flex-wrap: wrap;
+    width: 80%;
+    padding: 20px;
+}
+
+.galleryToEdit figure {
+    width: 18.5%;
+    height: fit-content;
+    margin: 4px 2px;
+    position: relative;
+}
+
+.galleryToEdit figure img {
+    object-fit: cover;
+    width: 100%;
+}
+
+.addAndDeleteButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    border-top: 2px solid rgb(199, 199, 199);
+    padding-top: 20px;
+    width: 80%;
+}
+
+.deleteButton {
+    position: absolute;
+    top: 3%;
+    right: 5%;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 5px;
+    font-size: 10px;
+}
+
+.deleteButton:hover, .closeModale:hover, .buttonAddPhoto:hover, .deleteGallery:hover {
+    cursor: pointer;
+}
+
+.buttonAddPhoto {
+    font-family: 'Syne';
+    font-size: 15px;
+    background-color: #1D6154;
+    color: white;
+    border-radius: 100px;
+    padding: 10px 12%;
+    margin-bottom: 20px;
+}
+
+.deleteGallery {
+    color: red;
+}
+
+.modale i {
+    margin: auto;
+}
+
