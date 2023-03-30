@@ -28,6 +28,7 @@ function getWorks() {
 function displayCategories(tableCategories) {
     tableCategories.forEach(element => {
     const filterButton = document.createElement("button")
+    filterButton.classList.add("backgroundFilterwhite")
     filterButton.textContent = element.name
     filterButton.setAttribute('data-category-id',element.id)
     const filterDiv = document.querySelector(".filter")
@@ -58,7 +59,7 @@ function filterProjects(){
     const projects = document.querySelectorAll('.gallery figure');
     btnFilter.forEach(element =>{
         element.addEventListener('click', function(){
-            console.log(btnFilter);
+            colourFilter(element)
             let categoryId = element.getAttribute('data-category-id');
             projects.forEach(el=>{
                 if(categoryId){
@@ -71,6 +72,21 @@ function filterProjects(){
                     el.style.display = 'block';
                 }
             })
+        })
+    })
+    colourFilter()
+}
+
+function colourFilter() {
+    const filterBtn = document.querySelectorAll('.filter button') 
+    filterBtn.forEach(element => {
+        element.addEventListener("click",  () => {
+            filterBtn.forEach(otherElement => {
+                otherElement.classList.remove('backgroundFilterGreen');
+                otherElement.classList.add('backgroundFilterWhite');
+            });
+            element.classList.add('backgroundFilterGreen');
+            element.classList.remove('backgroundFilterWhite');
         })
     })
 }

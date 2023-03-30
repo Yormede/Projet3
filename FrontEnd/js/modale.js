@@ -2,7 +2,8 @@ init();
 
 function init() {
     launchModale();
-    goToAddPhotoForm();
+    createAddPhotoForm()
+    goToAddPhotoForm()
 }
 
 function launchModale() {
@@ -94,37 +95,151 @@ function displayWorksInModale(tableWork) {
     });
 }
 
-function displayAddPhotoForm() {
-    const modaleContent = document.querySelector(".modalWrapper");
-    modaleContent.innerHTML = ''
+function createAddPhotoForm() {
+    const modale = document.querySelector(".modale");
+
+    const modaleContent = document.querySelector(".modaleWrapper");
+
+    const modaleContentAddPhoto = document.createElement("div");
+    modaleContentAddPhoto.classList = "modaleWrapperTwo"
+    modale.appendChild(modaleContentAddPhoto)
 
     const closeButton = document.createElement("p");
-    closeButton.innerHTML = "<i class=\"fas fa-thin fa-xmark\"></i>"
     closeButton.classList = "closeModale"
-    modaleContent.appendChild(closeButton);
+    modaleContentAddPhoto.appendChild(closeButton);
+
+    const closeButtonIcon = document.createElement("i");
+    closeButtonIcon.classList = "fas fa-thin fa-xmark"
+    closeButton.appendChild(closeButtonIcon);
+    closeButton.addEventListener("click", function() {
+        modale.style.display = "none";
+        modaleContentAddPhoto.style.display = "none";
+        modaleContent.style.display = "block";
+        makeElementEmpty()
+    });
+
+    const goBackArrow = document.createElement('p')
+    goBackArrow.classList = 'goBackArrow'
+    const goBackArrowIcon = document.createElement("i");
+    goBackArrowIcon.classList = "fa fa-thin fa-arrow-left"
+    modaleContentAddPhoto.appendChild(goBackArrow);
+    goBackArrow.appendChild(goBackArrowIcon);
+
+    goBackArrow.addEventListener("click", function (event) {
+        modaleContentAddPhoto.style.display = "none";
+        modaleContent.style.display = "block";
+        makeElementEmpty()
+    })
     
     const modaleTitle = document.createElement('h3')
     modaleTitle.innerText = 'Ajout photo'
     modaleTitle.classList = "modaleTitle modaleTitleAddPhoto"
-    modaleContent.appendChild(modaleTitle);
-
-    const goBackArrow = document.createElement('p')
-    goBackArrow.innerHTML = '<i class=\"fa fa-thin fa-arrow-left\"></i>'
-    goBackArrow.classList = 'goBackArrow'
-    modaleContent.appendChild(goBackArrow);
+    modaleContentAddPhoto.appendChild(modaleTitle);
 
     const formAddPhoto = document.createElement('form')
     formAddPhoto.classList = 'formAddPhoto'
-    formAddPhoto.innerHTML = '<div>    <label for="images">+ Ajout photo</label>    <p class="">jpg. png: 4mo max</p><input type="file" accept=".jpg, .png, .gif " onchange="previewPicture(this)" required></div><label for="title">Titre</label><input type="text" name="title" id="titleNewPhoto"><label for="class">Catégorie</label><select id="categoryOfForm" name="class"><option value="pomme">Pomme</option><option value="banane">Banane</option><option value="orange">Orange</option><option value="kiwi">Kiwi</option></select>'
+    modaleContentAddPhoto.appendChild(formAddPhoto)
 
+    const formDiv = document.createElement('div')
+    formDiv.classList = 'divDropImage'
+    formAddPhoto.appendChild(formDiv)
+
+    const iconImage = document.createElement('i')
+    iconImage.classList = "fa fa-light fa-image displayWhenNoImage"
+    formDiv.appendChild(iconImage)
+
+    const labelImage = document.createElement('label')
+    labelImage.textContent = "+ Ajouter photo"
+    labelImage.classList = "displayWhenNoImage"
+    labelImage.setAttribute('for', "image")
+    formDiv.appendChild(labelImage)
+
+    const paragraphInImage = document.createElement('p')
+    paragraphInImage.innerHTML = 'jpg. png: 4mo max'
+    paragraphInImage.classList = 'displayWhenNoImage'
+    formDiv.appendChild(paragraphInImage)
+
+    const inputImageFile = document.createElement('input')
+    inputImageFile.setAttribute('Type', "file")
+    inputImageFile.setAttribute('accept',".jpg, .png, .gif")
+    inputImageFile.setAttribute('required','true')
+    inputImageFile.setAttribute('id', "image")
+    formDiv.appendChild(inputImageFile)
+
+    const imagePreview = document.createElement('img')
+    imagePreview.setAttribute('id', "imagePreview")
+    formDiv.appendChild(imagePreview)
+
+    previewImage()
+
+    const labelTitle = document.createElement('label')
+    labelTitle.textContent = "Titre"
+    labelTitle.setAttribute('for', "titleAddPhoto")
+    formAddPhoto.appendChild(labelTitle)
+
+    const inputTitle = document.createElement('input')
+    inputTitle.setAttribute('id', "titleAddPhoto")
+    inputTitle.setAttribute("type", "text")
+    inputTitle.setAttribute("required", "true")
+    formAddPhoto.appendChild(inputTitle)
+
+    const labelCategory = document.createElement('label')
+    labelCategory.innerText = "Catégorie"
+    labelCategory.setAttribute('for', "categoryOfObject")
+    formAddPhoto.appendChild(labelCategory)
+
+    const selectClass = document.createElement('select')
+    selectClass.classList = 'SelectInAddPhoto'
+    selectClass.setAttribute("id", "categoryOfObject")
+    selectClass.setAttribute("required", "true")
+    formAddPhoto.appendChild(selectClass)
+
+    fetchCategoryForFormAddPhoto()
+
+    const divForButton = document.createElement('div')
+    divForButton.classList = "DivForAddingPhotoButton"
+    formAddPhoto.appendChild(divForButton)
+    const buttonSend = document.createElement('button')
+    buttonSend.setAttribute("type", "submit")
+    buttonSend.setAttribute("id", "buttonAddPhoto")
+    buttonSend.innerHTML = "Valider"
+    divForButton.appendChild(buttonSend)
+
+    inputTitle.addEventListener("input", checkInputs);
+    inputImageFile.addEventListener("change", checkInputs); 
+    
+    buttonSend.addEventListener("click", function () {
+        postNewProject(inputTitle.value, inputImageFile.files[0]);
+        event.preventDefault();
+    })
+}
+
+function createCategoryOptionForSelectInForm (x) {
+    const optionParent = document.querySelector('.SelectInAddPhoto')
+    x.forEach(function (e) {
+        const option = document.createElement('option')
+        option.setAttribute('value', e.name)
+        option.innerText = e.name
+        optionParent.appendChild(option)
+    })
+}
+
+function fetchCategoryForFormAddPhoto() {
+    fetch('http://localhost:5678/api/categories')
+    .then((response) => response.json())
+    .then((data) => {
+        createCategoryOptionForSelectInForm(data)
+    });
 }
 
 function goToAddPhotoForm() {
     const buttonAddPhoto = document.querySelector('.buttonAddPhoto')
     buttonAddPhoto.addEventListener('click', function (event) {
-        const modaleContent = document.querySelector(".modalWrapper");
-        modaleContent.innerHTML = ''
-    } )
+        const modaleContent = document.querySelector(".modaleWrapper");
+        modaleContent.style.display = "none";
+        const modalePhoto = document.querySelector(".modaleWrapperTwo")
+        modalePhoto.style.display = "block";
+    })
 }
 
 function confirmationDeletePhoto() {
@@ -171,7 +286,7 @@ function createPopup(x, idToDelete) {
     parentDivOfButton.appendChild(cancelButton)
     const deleteFetchButton = document.createElement('button')
     deleteFetchButton.classList = 'fetchDeleteButton'
-    deleteFetchButton.innerHTML = 'Supprimer !'
+    deleteFetchButton.innerHTML = 'Supprimer'
     deleteFetchButton.addEventListener('click', function (){
         fetchDelete(idToDelete)
         popup.remove()
@@ -182,19 +297,98 @@ function createPopup(x, idToDelete) {
 function fetchDelete(id) {
     const userObject = JSON.parse(localStorage.getItem('userLogged'));
     const userToken = userObject.token
-    console.log(userToken)
-    console.log(id)
     fetch('http://localhost:5678/api/works/'+id, {
         method: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + userToken
         },
-        }).then(response => {
-            if(Response.ok) {
-                return Response.json
-            } else {
-                alert('Une erreur est survenue')
-            }
-        }).catch()
+    }).then(response => {
+        if(Response.ok) {
+            return Response.json
+        } else {
+            alert('Une erreur est survenue')
+        }
+    }).catch()
 }
 
+function previewImage() {
+    const imageInput = document.getElementById("image");
+    const preview = document.getElementById("imagePreview");
+
+    imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+        preview.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+
+        document.querySelectorAll(".displayWhenNoImage").forEach(function (element) {
+            element.style.display = "none";
+        }) 
+    }
+    });
+}
+
+function makeElementEmpty() {
+    const imageInput = document.getElementById("image")
+    document.querySelector(".fa-xmark").addEventListener("click", () => {
+        imageInput.value = "";
+      });
+    document.querySelector(".fa-arrow-left").addEventListener("click", () => {
+        imageInput.value = "";
+      });
+      document.querySelectorAll(".displayWhenNoImage").forEach(function (element) {
+        element.style.display = "block";
+      });
+      document.getElementById("imagePreview").src = ""
+      document.getElementById("titleAddPhoto").value = ""
+}
+
+function checkInputs() {
+    const imageInput = document.getElementById("image");
+    const titleInput = document.getElementById("titleAddPhoto");
+    const validerButton = document.getElementById("buttonAddPhoto");
+
+        if (imageInput.files.length > 0 && titleInput.value.trim() !== "") {
+            validerButton.classList.add("enabledColor");
+            validerButton.classList.remove("disabledcolor");
+        } else {
+            validerButton.classList.remove("enabledColor");
+            validerButton.classList.add("disabledcolor");
+        }
+}
+
+function postNewProject(titleValue, imageValue) {
+        const select = document.querySelector("select")
+        let categoryId = undefined;
+        if (select.value === "Objets") {
+            categoryId = 1
+        } if (select.value === "Appartements") {
+            categoryId = 2
+        } if (select.value === "Hotels & restaurants") {
+            categoryId = 3
+        }
+        console.log(titleValue, categoryId, imageValue)
+
+        const userObject = JSON.parse(localStorage.getItem('userLogged'));
+        const userToken = userObject.token
+
+        const form = new FormData();
+        form.append("title", titleValue)
+        form.append("image", imageValue)
+        form.append("category", categoryId)
+
+    fetch('http://localhost:5678/api/works', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Authorization': 'Bearer ' + userToken
+      },
+      body: form
+    })
+}
