@@ -1,9 +1,10 @@
 init();
 
+
 function init() {
     launchModale();
-    createAddPhotoForm()
-    goToAddPhotoForm()
+    createAddPhotoForm();
+    goToAddPhotoForm();
 }
 
 function launchModale() {
@@ -74,24 +75,29 @@ function getWorksForModale() {
     });
 }
 
+function createWorksForModale(element) {
+    const imageElement = document.createElement("img");
+    imageElement.classList = "imageItem"
+    imageElement.setAttribute("data-id", element.id)
+    imageElement.crossOrigin = "allow";
+    imageElement.src = element.imageUrl;
+    const parent = document.querySelector(".galleryToEdit");
+    const figureElement = document.createElement("figure");
+    figureElement.setAttribute("data-id", element.id)
+    const figCaption = document.createElement("figcaption");
+    figCaption.textContent = "éditer"
+    const deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "<i class=\"fa fa-solid fa-trash-can\"></i>"
+    deleteButton.classList = 'deleteButton'
+    figureElement.appendChild(deleteButton);
+    figureElement.appendChild(imageElement);
+    figureElement.appendChild(figCaption);
+    parent.appendChild(figureElement);
+}
+
 function displayWorksInModale(tableWork) {
     tableWork.forEach(element => {
-        const imageElement = document.createElement("img");
-        imageElement.classList = "imageItem"
-        imageElement.setAttribute("id", element.id)
-        imageElement.crossOrigin = "allow";
-        imageElement.src = element.imageUrl;
-        const parent = document.querySelector(".galleryToEdit");
-        const figureElement = document.createElement("figure");
-        const figCaption = document.createElement("figcaption");
-        figCaption.textContent = "éditer"
-        const deleteButton = document.createElement("button");
-        deleteButton.innerHTML = "<i class=\"fa fa-solid fa-trash-can\"></i>"
-        deleteButton.classList = 'deleteButton'
-        figureElement.appendChild(deleteButton);
-        figureElement.appendChild(imageElement);
-        figureElement.appendChild(figCaption);
-        parent.appendChild(figureElement);
+        createWorksForModale(element)
     });
 }
 
@@ -200,17 +206,21 @@ function createAddPhotoForm() {
     divForButton.classList = "DivForAddingPhotoButton"
     formAddPhoto.appendChild(divForButton)
     const buttonSend = document.createElement('button')
-    buttonSend.setAttribute("type", "submit")
-    buttonSend.setAttribute("id", "buttonAddPhoto")
+    buttonSend.setAttribute("id", "submitPhotoButton")
     buttonSend.innerHTML = "Valider"
     divForButton.appendChild(buttonSend)
 
     inputTitle.addEventListener("input", checkInputs);
     inputImageFile.addEventListener("change", checkInputs); 
     
-    buttonSend.addEventListener("click", function () {
-        postNewProject(inputTitle.value, inputImageFile.files[0]);
-        event.preventDefault();
+    buttonSend.addEventListener("click", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let categoryID = document.getElementById('categoryOfObject').value;
+        console.log(categoryID)
+        console.log(inputImageFile.files[0].name)
+        postNewProject(inputTitle.value.trim(), inputImageFile.files[0], categoryID);
+
     })
 }
 
@@ -218,7 +228,7 @@ function createCategoryOptionForSelectInForm (x) {
     const optionParent = document.querySelector('.SelectInAddPhoto')
     x.forEach(function (e) {
         const option = document.createElement('option')
-        option.setAttribute('value', e.name)
+        option.setAttribute('value', e.id)
         option.innerText = e.name
         optionParent.appendChild(option)
     })
@@ -234,7 +244,7 @@ function fetchCategoryForFormAddPhoto() {
 
 function goToAddPhotoForm() {
     const buttonAddPhoto = document.querySelector('.buttonAddPhoto')
-    buttonAddPhoto.addEventListener('click', function (event) {
+    buttonAddPhoto.addEventListener('click', function () {
         const modaleContent = document.querySelector(".modaleWrapper");
         modaleContent.style.display = "none";
         const modalePhoto = document.querySelector(".modaleWrapperTwo")
@@ -252,7 +262,7 @@ function confirmationDeletePhoto() {
 const openPopup = (e) => {
     let gridItemClicked = e.target.closest("figure")
     let imageElement = gridItemClicked.children[1].src
-    let idToDelete = gridItemClicked.children[1].id
+    let idToDelete = gridItemClicked.children[1].getAttribute("data-id")
     createPopup(imageElement, idToDelete)
 }
 
@@ -285,9 +295,11 @@ function createPopup(x, idToDelete) {
     cancelButton.addEventListener('click', () => popup.remove())
     parentDivOfButton.appendChild(cancelButton)
     const deleteFetchButton = document.createElement('button')
-    deleteFetchButton.classList = 'fetchDeleteButton'
-    deleteFetchButton.innerHTML = 'Supprimer'
-    deleteFetchButton.addEventListener('click', function (){
+    deleteFetchButton.setAttribute('type', 'delete')
+    deleteFetchButton.classList.add('fetchDeleteButton');
+    deleteFetchButton.innerHTML = 'Supprimer';
+    deleteFetchButton.addEventListener('click', function (e){
+        e.preventDefault()
         fetchDelete(idToDelete)
         popup.remove()
     })
@@ -295,7 +307,8 @@ function createPopup(x, idToDelete) {
 }
 
 function fetchDelete(id) {
-    const userObject = JSON.parse(localStorage.getItem('userLogged'));
+    const idToRemove = document.querySelectorAll('[data-id=\"' + id +'\"]');
+    const userObject = JSON.parse(sessionStorage.getItem('userLogged'));
     const userToken = userObject.token
     fetch('http://localhost:5678/api/works/'+id, {
         method: 'DELETE',
@@ -303,8 +316,11 @@ function fetchDelete(id) {
             'Authorization': 'Bearer ' + userToken
         },
     }).then(response => {
-        if(Response.ok) {
-            return Response.json
+        if(response.ok) {
+            idToRemove.forEach(tag => {
+                tag.remove()
+            })
+            return response.json()
         } else {
             alert('Une erreur est survenue')
         }
@@ -352,7 +368,7 @@ function makeElementEmpty() {
 function checkInputs() {
     const imageInput = document.getElementById("image");
     const titleInput = document.getElementById("titleAddPhoto");
-    const validerButton = document.getElementById("buttonAddPhoto");
+    const validerButton = document.getElementById("submitPhotoButton");
 
         if (imageInput.files.length > 0 && titleInput.value.trim() !== "") {
             validerButton.classList.add("enabledColor");
@@ -363,20 +379,11 @@ function checkInputs() {
         }
 }
 
-function postNewProject(titleValue, imageValue) {
-        const select = document.querySelector("select")
-        let categoryId = undefined;
-        if (select.value === "Objets") {
-            categoryId = 1
-        } if (select.value === "Appartements") {
-            categoryId = 2
-        } if (select.value === "Hotels & restaurants") {
-            categoryId = 3
-        }
-        console.log(titleValue, categoryId, imageValue)
-
-        const userObject = JSON.parse(localStorage.getItem('userLogged'));
+function postNewProject(titleValue, imageValue ,categoryId) {
+        const userObject = JSON.parse(sessionStorage.getItem('userLogged'));
         const userToken = userObject.token
+        const modaleContent = document.querySelector(".modaleWrapper");
+        const modaleContentAddPhoto = document.querySelector(".modaleWrapperTwo");
 
         const form = new FormData();
         form.append("title", titleValue)
@@ -386,9 +393,23 @@ function postNewProject(titleValue, imageValue) {
     fetch('http://localhost:5678/api/works', {
       method: 'POST',
       headers: {
-        'accept': 'application/json',
         'Authorization': 'Bearer ' + userToken
       },
       body: form
+    }).then(response => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            alert("Une erreur est survenue, Veuillez réessayer après avoir actualisé la page.")
+        }
     })
+    .then(data => {
+        console.log(data)
+        createWorksForModale(data)
+        createWork(data)
+        makeElementEmpty()
+        modaleContentAddPhoto.style.display = "none";
+        modaleContent.style.display = "block";
+        confirmationDeletePhoto()
+        });
 }

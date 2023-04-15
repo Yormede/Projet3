@@ -5,7 +5,7 @@ function init(){
 }
 
 function redirectionAcceuil(){
-  document.location.href="/FrontEnd/index.html";
+  window.location.href="index.html";
 }
 
 function login() {
@@ -19,20 +19,23 @@ function login() {
       },
       body: JSON.stringify({email: email.value, password: password.value})
     })
-    .then(response => {
+    /*.then(response => {
       if (response.ok) {
         return response.json();
       } else {
         const errorLog = document.querySelector('.errorLog')
         errorLog.style.display = 'block'
       }
-    })
+    })*/
+    .then(response => response.json())
     .then(data => {
+      console.log(data)
       if (data != null) {
-      const userLogged = JSON.stringify(data)
-      localStorage.setItem('userLogged', userLogged);
-      redirectionAcceuil()
-    }})
+        const userLogged = JSON.stringify(data)
+        sessionStorage.setItem('userLogged', userLogged);
+        redirectionAcceuil()
+      }
+    })
   }else{
     const errorLog = document.querySelector('.errorLog')
     errorLog.style.display = 'block'

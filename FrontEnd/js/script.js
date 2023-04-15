@@ -5,7 +5,7 @@ function init(){
     getWorks();
     userLoggedIn();
     filterProjects();
-    LogInTimer();
+    //LogInTimer();
     logOut();
 }
 
@@ -28,7 +28,7 @@ function getWorks() {
 function displayCategories(tableCategories) {
     tableCategories.forEach(element => {
     const filterButton = document.createElement("button")
-    filterButton.classList.add("backgroundFilterwhite")
+    filterButton.classList.add("backgroundFilterWhite")
     filterButton.textContent = element.name
     filterButton.setAttribute('data-category-id',element.id)
     const filterDiv = document.querySelector(".filter")
@@ -36,22 +36,27 @@ function displayCategories(tableCategories) {
     })
 }
 
+function createWork(element) {
+    const imageElement = document.createElement("img");
+    imageElement.crossOrigin = "allow";
+    imageElement.src = element.imageUrl;
+    const figcaptionElement = document.createElement("figcaption");
+    figcaptionElement.innerText = element.title;
+    const parent = document.querySelector(".gallery");
+    const figureElement = document.createElement("figure");
+    figureElement.setAttribute('data-category-id',element.categoryId)
+    figureElement.setAttribute('data-id',element.id)
+    
+    figureElement.appendChild(imageElement);
+    figureElement.appendChild(figcaptionElement);
+    parent.appendChild(figureElement);
+}
+
 function displayWorks(tableWork) {
     tableWork.forEach(element => {
-        const imageElement = document.createElement("img");
-        imageElement.crossOrigin = "allow";
-        imageElement.src = element.imageUrl;
-        const figcaptionElement = document.createElement("figcaption");
-        figcaptionElement.innerText = element.title;
-        const parent = document.querySelector(".gallery");
-        const figureElement = document.createElement("figure");
-        figureElement.setAttribute('data-category-id',element.categoryId)
-        
-        figureElement.appendChild(imageElement);
-        figureElement.appendChild(figcaptionElement);
-        parent.appendChild(figureElement);
+        createWork(element)
       });
-      filterProjects(); 
+      filterProjects();
 }
 
 function filterProjects(){
@@ -100,7 +105,7 @@ function LogInTimer() {
         localStorage.setItem('setupTime', now)
     } else {
         if(now-setupTime > hours*1000*60*60) {
-            localStorage.clear()
+            sessionStorage.clear()
             localStorage.setItem('setupTime', now);
             alert("vous n'ètes pas connecté")
         }
@@ -108,7 +113,8 @@ function LogInTimer() {
   }
 
 function userLoggedIn() {
-    const userObject = JSON.parse(localStorage.getItem('userLogged'));
+    if(sessionStorage.getItem('userLogged')){
+         const userObject = JSON.parse(sessionStorage.getItem('userLogged'));
     if (userObject.token !== undefined) {
         const elementToDisplayWhenLoggedIn = document.querySelectorAll('.displayWhenLoggedIn')
         elementToDisplayWhenLoggedIn.forEach (element =>{
@@ -123,12 +129,14 @@ function userLoggedIn() {
         const topBlackBar = document.querySelector(".topBarBlack")
         topBlackBar.style.display = 'flex';
     }
+    }
+   
 }
 
 function logOut() {
     const logOutButton = document.querySelector('.logOutButton')
     logOutButton.addEventListener('click', function (event) {
-      localStorage.clear();
+        sessionStorage.clear();
       window.location.reload();
     })
 }
