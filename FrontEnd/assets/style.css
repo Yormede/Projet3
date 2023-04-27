@@ -262,6 +262,7 @@ footer nav ul {
 
 .errorSubmit {
 	color: red;
+	display: none;
 	margin: 15px auto 0px auto;
 }
 

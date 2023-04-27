@@ -202,6 +202,11 @@ function createAddPhotoForm() {
 
     fetchCategoryForFormAddPhoto()
 
+    const errorParagraph = document.createElement('p')
+    errorParagraph.textContent = "Un ou plusieurs champs sont vides !"
+    errorParagraph.classList.add("errorSubmit")
+    formAddPhoto.appendChild(errorParagraph)
+
     const divForButton = document.createElement('div')
     divForButton.classList = "DivForAddingPhotoButton"
     formAddPhoto.appendChild(divForButton)
@@ -351,9 +356,11 @@ function makeElementEmpty() {
     const imageInput = document.getElementById("image")
     document.querySelector(".fa-xmark").addEventListener("click", () => {
         imageInput.value = "";
+        imageInput.reset()
       });
     document.querySelector(".fa-arrow-left").addEventListener("click", () => {
         imageInput.value = "";
+        imageInput.reset()
       });
       document.querySelectorAll(".displayWhenNoImage").forEach(function (element) {
         element.style.display = "block";
@@ -363,59 +370,57 @@ function makeElementEmpty() {
 }
 
 function checkInputs() {
-    const imageInput = document.getElementById("image");
-    const titleInput = document.getElementById("titleAddPhoto");
-    const validerButton = document.getElementById("submitPhotoButton");
+const imageInput = document.getElementById("image");
+const titleInput = document.getElementById("titleAddPhoto");
+const validerButton = document.getElementById("submitPhotoButton");
 
-        if (imageInput.files.length > 0 && titleInput.value.trim() !== "") {
-            validerButton.classList.add("enabledColor");
-            validerButton.classList.remove("disabledcolor");
-        } else {
-            validerButton.classList.remove("enabledColor");
-            validerButton.classList.add("disabledcolor");
-        }
+    if (imageInput.files.length > 0 && titleInput.value.trim() !== "") {
+        validerButton.classList.add("enabledColor");
+        validerButton.classList.remove("disabledcolor");
+    } else {
+        validerButton.classList.remove("enabledColor");
+        validerButton.classList.add("disabledcolor");
+    }
 }
 
 function postNewProject(titleValue, imageValue ,categoryId) {
-        const userObject = JSON.parse(sessionStorage.getItem('userLogged'));
-        const userToken = userObject.token
-        const modaleContent = document.querySelector(".modaleWrapper");
-        const modaleContentAddPhoto = document.querySelector(".modaleWrapperTwo");
-        const divOfbutton = document.querySelector(".DivForAddingPhotoButton")
-        const parent = document.querySelector(".DivForAddingPhotoButton").parentNode
+    const userObject = JSON.parse(sessionStorage.getItem('userLogged'));
+    const userToken = userObject.token
+    const modaleContent = document.querySelector(".modaleWrapper");
+    const modaleContentAddPhoto = document.querySelector(".modaleWrapperTwo");
+    const errorP = document.querySelector('.errorSubmit')
+    const titleInput = document.querySelector('#titleAddPhoto')
 
-        const form = new FormData();
-        form.append("title", titleValue)
-        form.append("image", imageValue)
-        form.append("category", categoryId)
+    const form = new FormData();
+    form.append("title", titleValue)
+    form.append("image", imageValue)
+    form.append("category", categoryId)
 
-        if (titleValue === null || titleValue === undefined || imageValue === null || imageValue === undefined) {
-            const errorP = document.createElement('p')
-            errorP.textContent = "Un ou plusieurs champs sont vides !"
-            errorP.classList.add("errorSubmit")
-            parent.insertBefore(errorP, divOfbutton)
-        } else {
-            fetch('http://localhost:5678/api/works', {
-                method: 'POST',
-                headers: {
-                  'Authorization': 'Bearer ' + userToken
-                },
-                body: form
-              }).then(response => {
-                  if (response.ok) {
-                      return response.json()
-                  } else {
-                      alert("Une erreur est survenue, Veuillez réessayer après avoir actualisé la page.")
-                  }
-              })
-              .then(data => {
-                  console.log(data)
-                  createWorksForModale(data)
-                  createWork(data)
-                  makeElementEmpty()
-                  modaleContentAddPhoto.style.display = "none";
-                  modaleContent.style.display = "block";
-                  confirmationDeletePhoto()
-                  });
-        }
+    if (titleInput.value == "" || imageValue == undefined ) {
+        errorP.style.display= "block"
+    } else {
+        fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + userToken
+            },
+            body: form
+            }).then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    alert("Une erreur est survenue, Veuillez réessayer après avoir actualisé la page.")
+                }
+            })
+            .then(data => {
+            if (data != null) {
+                createWorksForModale(data)
+                createWork(data)
+                makeElementEmpty()
+                modaleContentAddPhoto.style.display = "none";
+                modaleContent.style.display = "block";
+                confirmationDeletePhoto()
+            }
+        });
+    }
 }
