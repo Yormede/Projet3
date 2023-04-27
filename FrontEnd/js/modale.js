@@ -217,10 +217,7 @@ function createAddPhotoForm() {
         e.preventDefault();
         e.stopPropagation();
         let categoryID = document.getElementById('categoryOfObject').value;
-        console.log(categoryID)
-        console.log(inputImageFile.files[0].name)
-        postNewProject(inputTitle.value.trim(), inputImageFile.files[0], categoryID);
-
+        postNewProject(inputTitle.value, inputImageFile.files[0], categoryID);
     })
 }
 
@@ -384,32 +381,41 @@ function postNewProject(titleValue, imageValue ,categoryId) {
         const userToken = userObject.token
         const modaleContent = document.querySelector(".modaleWrapper");
         const modaleContentAddPhoto = document.querySelector(".modaleWrapperTwo");
+        const divOfbutton = document.querySelector(".DivForAddingPhotoButton")
+        const parent = document.querySelector(".DivForAddingPhotoButton").parentNode
 
         const form = new FormData();
         form.append("title", titleValue)
         form.append("image", imageValue)
         form.append("category", categoryId)
 
-    fetch('http://localhost:5678/api/works', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + userToken
-      },
-      body: form
-    }).then(response => {
-        if (response.ok) {
-            return response.json()
+        if (titleValue === null || titleValue === undefined || imageValue === null || imageValue === undefined) {
+            const errorP = document.createElement('p')
+            errorP.textContent = "Un ou plusieurs champs sont vides !"
+            errorP.classList.add("errorSubmit")
+            parent.insertBefore(errorP, divOfbutton)
         } else {
-            alert("Une erreur est survenue, Veuillez réessayer après avoir actualisé la page.")
+            fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + userToken
+                },
+                body: form
+              }).then(response => {
+                  if (response.ok) {
+                      return response.json()
+                  } else {
+                      alert("Une erreur est survenue, Veuillez réessayer après avoir actualisé la page.")
+                  }
+              })
+              .then(data => {
+                  console.log(data)
+                  createWorksForModale(data)
+                  createWork(data)
+                  makeElementEmpty()
+                  modaleContentAddPhoto.style.display = "none";
+                  modaleContent.style.display = "block";
+                  confirmationDeletePhoto()
+                  });
         }
-    })
-    .then(data => {
-        console.log(data)
-        createWorksForModale(data)
-        createWork(data)
-        makeElementEmpty()
-        modaleContentAddPhoto.style.display = "none";
-        modaleContent.style.display = "block";
-        confirmationDeletePhoto()
-        });
 }

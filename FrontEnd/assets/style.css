@@ -260,6 +260,11 @@ footer nav ul {
 	margin: 0px auto 15px auto;
 }
 
+.errorSubmit {
+	color: red;
+	margin: 15px auto 0px auto;
+}
+
 .topBarBlack {
 	z-index: 10;
 	height: 50px;

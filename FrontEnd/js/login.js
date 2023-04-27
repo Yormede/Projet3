@@ -19,15 +19,15 @@ function login() {
       },
       body: JSON.stringify({email: email.value, password: password.value})
     })
-    /*.then(response => {
+    .then(response => {
       if (response.ok) {
         return response.json();
       } else {
         const errorLog = document.querySelector('.errorLog')
         errorLog.style.display = 'block'
       }
-    })*/
-    .then(response => response.json())
+    })
+    // .then(response => response.json())
     .then(data => {
       console.log(data)
       if (data != null) {

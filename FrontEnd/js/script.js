@@ -13,7 +13,14 @@ function getCategories() {
     fetch('http://localhost:5678/api/categories')
     .then((response) => response.json())
     .then((data) => {
-        displayCategories(data);
+        data.forEach(element => {
+            const filterButton = document.createElement("button")
+            filterButton.classList.add("backgroundFilterWhite")
+            filterButton.textContent = element.name
+            filterButton.setAttribute('data-category-id',element.id)
+            const filterDiv = document.querySelector(".filter")
+            filterDiv.appendChild(filterButton)
+            })
     });
 }
 
@@ -23,17 +30,6 @@ function getWorks() {
     .then(data => { 
         displayWorks(data);
 });
-}
-
-function displayCategories(tableCategories) {
-    tableCategories.forEach(element => {
-    const filterButton = document.createElement("button")
-    filterButton.classList.add("backgroundFilterWhite")
-    filterButton.textContent = element.name
-    filterButton.setAttribute('data-category-id',element.id)
-    const filterDiv = document.querySelector(".filter")
-    filterDiv.appendChild(filterButton)
-    })
 }
 
 function createWork(element) {
@@ -97,7 +93,7 @@ function colourFilter() {
 }
 
 function LogInTimer() {
-    var hours = 8; // to clear the localStorage after 1 hour
+    var hours = 24; // to clear the localStorage after 1 hour
     // (if someone want to clear after 8hrs simply change hours=8)
     var now = new Date().getTime();
     var setupTime = localStorage.getItem('setupTime');
